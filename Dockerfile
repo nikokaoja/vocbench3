@@ -1,19 +1,16 @@
-FROM openjdk:8-jdk-alpine
+FROM tomcat:8.0-alpine
 
 RUN apk update && apk upgrade && apk add --no-cache curl
 
-WORKDIR /app/vocbench3
+RUN curl -L https://github.com/niva83/vocbench-semanticturkey/raw/master/vocbench/vocbench.war -o vocbench.war \
+    && curl -L https://github.com/niva83/vocbench-semanticturkey/raw/master/vocbench/tomcat-users.xml -o tomcat-users.xml \
+    && curl -L https://raw.githubusercontent.com/niva83/vocbench-semanticturkey/master/vocbench/vbconfig.js -o vbconfig.js \
+    && cp vocbench.war /usr/local/tomcat/webapps/ \
+    && cp tomcat-users.xml /usr/local/tomcat/conf/ \
+    && cp vbconfig.js /usr/local/tomcat/webapps/ \
+    && rm vocbench.war \
+    && rm tomcat-users.xml \
+    && rm vbconfig.js
 
-ENV VB_VER=8.0
-ENV VB_WEB_VER=8.0.0
-
-RUN curl -L https://bitbucket.org/art-uniroma2/vocbench3/downloads/vocbench3-${VB_WEB_VER}-full.zip -o vocbench3_full.zip \
-    && unzip vocbench3_full.zip -d /app/vocbench3 \
-    && rm vocbench3_full.zip
-
-RUN mkdir data
-
-EXPOSE 1979
-
-CMD sh /app/vocbench3/semanticturkey-${VB_VER}/bin/karaf server
-
+EXPOSE 8080
+CMD ["catalina.sh", "run"]
