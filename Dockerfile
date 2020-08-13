@@ -7,7 +7,7 @@ WORKDIR /app/vocbench3
 ENV VB_VER=8.0
 ENV VB_WEB_VER=8.0.0
 
-RUN curl -L https://bitbucket.org/art-uniroma2/vocbench3/downloads/vocbench3-${VB_WEB_VER}_full.zip -o vocbench3_full.zip \
+RUN curl -L https://bitbucket.org/art-uniroma2/vocbench3/downloads/vocbench3-${VB_WEB_VER}-full.zip -o vocbench3_full.zip \
     && unzip vocbench3_full.zip -d /app/vocbench3 \
     && rm vocbench3_full.zip
 
